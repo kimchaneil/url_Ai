@@ -77,7 +77,6 @@
               </ul>
             </li>
             <li><a href="contact.html">Contact</a></li>-->
-            <li><a class="get-a-quote" href="get-a-quote.html">Get a Quote</a></li>
           </ul>
         </nav><!-- .navbar -->
       </div>
@@ -91,15 +90,18 @@
             <h2 data-aos="fade-up">악성 URL 탐지</h2>
             <!--<p data-aos="fade-up" data-aos-delay="100">Facere distinctio molestiae nisi fugit tenetur repellat non praesentium nesciunt optio quis sit odio nemo quisquam. eius quos reiciendis eum vel eum voluptatem eum maiores eaque id optio ullam occaecati odio est possimus vel reprehenderit</p>-->
             
-            <form action="#" class="form-search d-flex align-items-stretch mb-3" data-aos="fade-up" data-aos-delay="200">
+            <form action="#" class="form-search d-flex align-items-stretch mb-3" data-aos="fade-up">
               <input id="input" name="input" type="text" class="form-control" placeholder="URL">
-              <button id="submit" type="submit" class="btn btn-primary" onclick="checkURL()">upload</button>
+              <button id="submit" type="submit" class="btn btn-primary" onclick="showLoading()">upload</button>
               <script>
                 document.getElementById("submit").addEventListener("click", function(event){
                 event.preventDefault(); //버튼 눌렀을 때 새로고침 방지를 위해 이벤트 리스너 사용
                 });
               </script>
             </form>
+            <div class="loading-container" id="loadingContainer" data-aos="fade-up" style="display: none;">
+              <div class="loading-spinner"><p>Checking...</p></div>
+            </div>
             <div class="row gy-4" data-aos="fade-up" data-aos-delay="400">
               <!--<div class="col-lg-3 col-6">
                 <div class="stats-item text-center w-100 h-100">
@@ -129,9 +131,55 @@
                 </div>
               </div>--><!-- End Stats Item -->
           </div>
-          <div class="col-lg-5 order-1 order-lg-2 hero-img" data-aos="zoom-out">
-            이미지 대신 실시간 데이터 박스로 변경
-            <img src="../static/img/hero-img.svg" class="img-fluid mb-3 mb-lg-0" alt="">
+          <div class="col-lg-5 order-1 order-lg-2" data-aos="zoom-out" style="background-color: rgba(31, 31, 167, 0.199); border-radius: 30px;">
+            <p></p>
+            <ul>
+              <li>
+                <div id="resultURL" style="font-size: 20px; font-weight: bold;">
+                  <h5>URL&nbsp;</h5>
+                </div>
+                <p></p>
+              </li>
+              <li> 
+                <div id="resultDga" style="font-size: 20px; font-weight: bold;"> 
+                  <h5>DGA&nbsp;</h5>
+                </div>
+                <p></p>
+              </li>
+              <li>
+                <i></i>
+                <div id="summary">
+                  <canvas id="myChart" width="550" height="350"></canvas>
+                  <script>
+                    var initialData = {
+                      labels: ["http", "https", ".", "//", "-", "@", "www", "=", "_", "~", "~", "?", "&, #, %, ;", "문자열", "숫자"],
+                      datasets: [{
+                          label: '개수',
+                          data: 0,
+                          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                          borderColor: 'rgba(75, 192, 192, 1)',
+                          borderWidth: 1
+                      }]
+                    };
+                    
+                    // 그래프 생성
+                    var ctx = document.getElementById('myChart').getContext('2d');
+                    var myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: initialData,
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    stepSize: 10
+                                }
+                            }
+                        }
+                    });
+                  </script>
+                </div>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -176,7 +224,7 @@
           <!--구글 지도 api-->
           <div class="row gy-4">
             <div class="col-lg-6 position-relative align-self-start order-lg-last order-first">
-              <div id="map" style="height: 600px;"></div>
+              <div id="map" style="height: 600px; border-radius: 30px;"></div>
               <!--<img src="../static/img/about.jpg" class="img-fluid" alt="">
               <a href="https://www.youtube.com/watch?v=LXb3EKWsInQ" class="glightbox play-btn"></a>-->
               <script defer src="../static/js/map.js"></script>
@@ -185,60 +233,17 @@
                 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAf5fxLm5mo-KsbIan_30ZyUHUv1TC17FA&callback=initMap"
                   ></script>
               <script>
-                defer
                 src="../static/js/map.js"
               </script>
             </div>
-            <div class="col-lg-6 content order-last  order-lg-first">
-              <h3>Why</h3>
-              <p></p>
+            <div class="col-lg-6 content order-last  order-lg-first" style="border: 1px solid; border-radius: 30px; overflow:auto; width:650px; height:600px;">
               <ul>
-                <li data-aos="fade-up" data-aos-delay="100">
-                  <i class="bi bi-diagram-3"></i>
-                  <div id="resultURL">
-                    <!--<h5>악성 url 판단</h5>
-                    <p></p>-->
+                <li>
+                  &nbsp;&nbsp;&nbsp;
+                  <p></p>
+                  <div id="json">
                   </div>
-                </li>
-                <li data-aos="fade-up" data-aos-delay="200">
-                  <i class="bi bi-fullscreen-exit"></i>
-                  <div id="resultDga">
-                    <!-- <h5>DGA 판단 %</h5>
-                    <p></p> -->
-                  </div>
-                </li>
-                <li data-aos="fade-up" data-aos-delay="300">
-                  <i class="bi bi-broadcast"></i>
-                  <div id="summary">
-                    <canvas id="myChart" width="550" height="350"></canvas>
-                    <script>
-                      var initialData = {
-                        labels: ["http", "https", ".", "//", "-", "@", "www", "=", "_", "~", "~", "?", "&, #, %, ;", "문자열", "숫자"],
-                        datasets: [{
-                            label: '개수',
-                            data: 0,
-                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                            borderColor: 'rgba(75, 192, 192, 1)',
-                            borderWidth: 1
-                        }]
-                      };
-                      
-                      // 그래프 생성
-                      var ctx = document.getElementById('myChart').getContext('2d');
-                      var myChart = new Chart(ctx, {
-                          type: 'bar',
-                          data: initialData,
-                          options: {
-                              scales: {
-                                  y: {
-                                      beginAtZero: true,
-                                      stepSize: 10
-                                  }
-                              }
-                          }
-                      });
-                    </script>
-                  </div>
+                  <p></p>
                 </li>
               </ul>
             </div>

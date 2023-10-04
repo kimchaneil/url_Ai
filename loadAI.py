@@ -36,5 +36,6 @@ def proccess_cnn(input_data) :
     for i in label:
         if label[i] == predicted_class:
             reArr[0] = i
-    reArr[1] = per
+
+    reArr[1] = round(per, 2)
     return reArr  # [0]에는 결과 [1]에는 확률을 리턴

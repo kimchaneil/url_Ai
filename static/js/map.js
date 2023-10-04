@@ -38,21 +38,22 @@ function checkURL() {
     .then(response => response.json())
     .then(function (data) {
         if (data.error==1){
-            alert("URL 삭제, 변경"); //URL이 삭제되었거나 변경되어 존재하지 않아 리다이렉션 되거나 접속이 되지 않음
+            alert("잘못된 URL 입니다."); //URL이 삭제되었거나 변경되어 존재하지 않아 리다이렉션 되거나 접속이 되지 않음
         }
         else {
             addMarker(data);
-            //logInput(data);
-            var cnndata = "결과" + data.cnn_result + data.cnn_per + "%" 
+            var cnndata = "DGA :  " + data.cnn_result + " " + data.cnn_per + "%" 
             changeText("resultDga", cnndata)
-            var urldata = "결과" + data.url_result + data.url_per + "%"
+            var urldata = "URL :  " + data.url_result + " " + data.url_per + "%"
             changeText("resultURL", urldata)
             var summaryData = [data["http contain_count"], data["https contain_count"], data[". contain_count"], data["// contain_count"], data["- contain_count"], data["- contain_count"], data["@ contain_count"], data["www contain_count"], data["= contain_count"], data["_ contain_count"], data["~ contain_count"], data["? contain_count"], data["&,#,%,; contain_count"], data["string_contain_count"], data["number_count"]]
             myChart.data.datasets[0].data = summaryData;
             myChart.update();
-
+            var ul = document.getElementById("json");
+            ul.innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
             var element = document.getElementById("map");
-            element.scrollIntoView({behavior: 'smooth', block: 'end'});
+            hideLoading(); // 작업 완료시 로딩 표시를 숨깁니다.
+            //element.scrollIntoView({behavior: 'smooth', block: 'end'});
         }
         // {'domain_count': 1, 'is_random_strings': 0.3043, 'upper_alphabet_percentage': 0.0, 
 
@@ -101,4 +102,14 @@ function logInput(data) {
 function changeText(url_ID, data) {
     const dataContainer = document.getElementById(url_ID);
     dataContainer.innerHTML = data;
+}
+function showLoading() {
+    var show = document.getElementById('loadingContainer');
+    show.style.display = "block";
+    checkURL()
+}
+
+function hideLoading() {
+    var hide = document.getElementById('loadingContainer');
+    hide.style.display = "none";
 }

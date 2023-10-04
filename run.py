@@ -12,7 +12,18 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
     # x 변수 html에 전달, html에서 {{x}}로 받음
-
+@app.route('/code.html')
+def code():
+    return render_template('code.html')
+    # x 변수 html에 전달, html에서 {{x}}로 받음
+@app.route('/team.html')
+def team():
+    return render_template('team.html')
+    # x 변수 html에 전달, html에서 {{x}}로 받음
+@app.route('/index.html')
+def home():
+    return render_template('index.html')
+    # x 변수 html에 전달, html에서 {{x}}로 받음
 
 @app.route('/process_url', methods=['POST'])
 def process_url():
