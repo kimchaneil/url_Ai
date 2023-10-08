@@ -6,6 +6,7 @@
     <title>Logis Bootstrap Template - Index</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Favicons -->
     <link href="../static/img/favicon.png" rel="icon">
     <link href="../static/img/apple-touch-icon.png" rel="apple-touch-icon">
@@ -19,6 +20,7 @@
     <link href="../static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
     <link href="../static/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
     <link href="../static/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="../static//css/gands.css" rel="stylesheet">
     <link href="../static/vendor/aos/aos.css" rel="stylesheet">
     <!-- Template Main CSS File -->
     <link href="../static/css/main.css" rel="stylesheet">
@@ -31,15 +33,6 @@
     * Author: BootstrapMade.com
     * License: https://bootstrapmade.com/license/
     ======================================================== -->
-    <style>
-      /* 그래프 컨테이너의 스타일 */
-      #chart-container {
-          width: 400px;
-          height: 300px;
-          margin: 20px;
-          border: 1px solid #ccc;
-      }
-    </style>
   </head>
 
   <body>
@@ -92,7 +85,7 @@
             
             <form action="#" class="form-search d-flex align-items-stretch mb-3" data-aos="fade-up">
               <input id="input" name="input" type="text" class="form-control" placeholder="URL">
-              <button id="submit" type="submit" class="btn btn-primary" onclick="showLoading()">upload</button>
+              <button id="submit" type="submit" class="btn btn-primary" onclick="showLoading()">Check</button>
               <script>
                 document.getElementById("submit").addEventListener("click", function(event){
                 event.preventDefault(); //버튼 눌렀을 때 새로고침 방지를 위해 이벤트 리스너 사용
@@ -131,55 +124,17 @@
                 </div>
               </div>--><!-- End Stats Item -->
           </div>
-          <div class="col-lg-5 order-1 order-lg-2" data-aos="zoom-out" style="background-color: rgba(31, 31, 167, 0.199); border-radius: 30px;">
+          <div class="col-lg-5 order-1 order-lg-2  scrollable-div" data-aos="zoom-out">
+            <table>
+              <tbody>
+                {% for index, row in table_html.iterrows() %}
+                <tr class="{% if row['label'] == 1 %}red-background{% else %}blue-background{% endif %}">
+                    <td>{{ row['url'] }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
             <p></p>
-            <ul>
-              <li>
-                <div id="resultURL" style="font-size: 20px; font-weight: bold;">
-                  <h5>URL&nbsp;</h5>
-                </div>
-                <p></p>
-              </li>
-              <li> 
-                <div id="resultDga" style="font-size: 20px; font-weight: bold;"> 
-                  <h5>DGA&nbsp;</h5>
-                </div>
-                <p></p>
-              </li>
-              <li>
-                <i></i>
-                <div id="summary">
-                  <canvas id="myChart" width="550" height="350"></canvas>
-                  <script>
-                    var initialData = {
-                      labels: ["http", "https", ".", "//", "-", "@", "www", "=", "_", "~", "~", "?", "&, #, %, ;", "문자열", "숫자"],
-                      datasets: [{
-                          label: '개수',
-                          data: 0,
-                          backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                          borderColor: 'rgba(75, 192, 192, 1)',
-                          borderWidth: 1
-                      }]
-                    };
-                    
-                    // 그래프 생성
-                    var ctx = document.getElementById('myChart').getContext('2d');
-                    var myChart = new Chart(ctx, {
-                        type: 'bar',
-                        data: initialData,
-                        options: {
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    stepSize: 10
-                                }
-                            }
-                        }
-                    });
-                  </script>
-                </div>
-              </li>
-            </ul>
           </div>
         </div>
       </div>
@@ -236,14 +191,64 @@
                 src="../static/js/map.js"
               </script>
             </div>
-            <div class="col-lg-6 content order-last  order-lg-first" style="border: 1px solid; border-radius: 30px; overflow:auto; width:650px; height:600px;">
+            <div class="col-lg-6 content order-last order-lg-first">
               <ul>
                 <li>
-                  &nbsp;&nbsp;&nbsp;
-                  <p></p>
-                  <div id="json">
+                  <div id="resultTotal" style="font-size: 20px; font-weight: bold;">
+                    <h5>전체 예측 결과&nbsp;</h5>
                   </div>
                   <p></p>
+                </li>
+                <li> 
+                  <div id="resultURL" style="font-size: 20px; font-weight: bold;"> 
+                    <h5>AI 예측 결과&nbsp;</h5>
+                  </div>
+                  <p></p>
+                </li>
+                <li> 
+                  <div id="resultDga" style="font-size: 20px; font-weight: bold;"> 
+                    <h5>전체 예측 결과&nbsp;</h5>
+                  </div>
+                  <p></p>
+                </li>
+                <li> 
+                  <div id="trustRsult" style="font-size: 20px; font-weight: bold;"> 
+                    <h5>예측 신뢰도&nbsp;</h5>
+                  </div>
+                  <p></p>
+                </li>
+                <li>
+                  <i></i>
+                  <div id="summary">
+                    <canvas id="myChart" height="350"></canvas>
+                    <script>
+                      var initialData = {
+                        labels: ['model1', 'model2', 'model3', 'model4', 'GB', 'HGB', 'RF', 'CNN'],
+                        datasets: [{
+                            label: '%',
+                            data: 0,
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        }]
+                      };
+                      
+                      // 그래프 생성
+                      var ctx = document.getElementById('myChart').getContext('2d');
+                      var myChart = new Chart(ctx, {
+                          type: 'bar',
+                          data: initialData,
+                          options: {
+                              scales: {
+                                  y: {
+                                      beginAtZero: true,
+                                      stepSize: 10
+                                  }
+                              }
+                          }
+                      });
+                    </script>
+                  </div>
                 </li>
               </ul>
             </div>

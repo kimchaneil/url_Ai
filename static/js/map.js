@@ -1,5 +1,7 @@
 var map
 var allInputs = "";
+var csvFilePath = "../../dataset/print.csv";
+
 function initMap() { //초기 지도 설정
     var myLatLng = {lat: 37.713766, lng: 126.889334};
 
@@ -24,9 +26,8 @@ function initMap() { //초기 지도 설정
         infowindow.open(map, marker);
     });
 }
-function initChart() {
-    
-}
+
+// 샘플링 함수 호출
 
 function checkURL() {
     var url = document.getElementById("input").value;
@@ -42,36 +43,28 @@ function checkURL() {
         }
         else {
             addMarker(data);
-            var cnndata = "DGA :  " + data.cnn_result + " " + data.cnn_per + "%" 
+            var cnndata = "DGA 예측 결과 :  [" + data.cnn + "] " + data.cnn_per + "%" 
             changeText("resultDga", cnndata)
-            var urldata = "URL :  " + data.url_result + " " + data.url_per + "%"
+            var urldata = "AI 예측 결과 :  [" + data.AI_answer + "] " + data.AI_prob + "%"
             changeText("resultURL", urldata)
-            var summaryData = [data["http contain_count"], data["https contain_count"], data[". contain_count"], data["// contain_count"], data["- contain_count"], data["- contain_count"], data["@ contain_count"], data["www contain_count"], data["= contain_count"], data["_ contain_count"], data["~ contain_count"], data["? contain_count"], data["&,#,%,; contain_count"], data["string_contain_count"], data["number_count"]]
+            var totaldata = "전체 예측 결과 :  [" + data.Total_answer + "] " + data.Total_prob + "%"
+            changeText("resultTotal", totaldata)
+            var trustdata = "예측 신뢰도 : " + data.Truth_prob + "%" 
+            changeText("trustRsult", trustdata)
+            // {'model1': 'safe', 'model1_per': 98.42, 'model2': 'safe', 'model2_per': 98.11, 'model3': 'safe', 'model3_per': 98.45, 'model4': 'safe', 
+            //  'model4_per': 99.5, 'GB': 'safe', 'GB_per': 96.13000000000001, 'HGB': 'safe', 'HGB_per': 95.92, 'RF': 'safe', 'RF_per': 99.0, 'CNN': 'safe',
+            //  'CNN_per': 99.9763, 'AI_answer': 'safe', 'AI_prob': 97.9123, 'Total_answer': 'safe', 'Total_prob': 98.1082, 'Truth_prob': 99.0}
+            var summaryData = [data["model1_per"], data["model2_per"], data["model3_per"], data["model4_per"], data["GB_per"], data["HGB_per"], data["RF_per"], data["cnn_per"]]
             myChart.data.datasets[0].data = summaryData;
             myChart.update();
-            var ul = document.getElementById("json");
-            ul.innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
             var element = document.getElementById("map");
             hideLoading(); // 작업 완료시 로딩 표시를 숨깁니다.
-            //element.scrollIntoView({behavior: 'smooth', block: 'end'});
+            element.scrollIntoView({behavior: 'smooth', block: 'end'});
         }
-        // {'domain_count': 1, 'is_random_strings': 0.3043, 'upper_alphabet_percentage': 0.0, 
-
-        // 'http contain_count': 0, 'https contain_count': 1, 
-        // '. contain_count': 2, '// contain_count': 1, '#NAME?': 0, '@ contain_count': 0, 'www contain_count': 1, '#NAME?.1': 0, '_ contain_count': 0, 
-        // '~ contain_count': 0, '? contain_count': 0, '&,#,%,; contain_count': 0, 'string_contain_count': 0, 'number_count': 0,
-
-        // 'url_length': 24, 
-        // 'url_path_length': 1, 'url_path_level': 1, 'url_netloc_length': 15, 'url_netloc_level': 2, 'url_tld_length': 3, 'query_length': 0,
-        // 'query_encoding': 0, 'query_malicious_count': 0, 'query_count': 0, 'ip_in_url': 0, 'tiny_url': 0, 'port_number': 443, 'domain_run_day': 6789, 
-        // 'domain_remain_day': 149, 'domain_whole_life': 6938, 'traffic_length': 0, 'is_abnormal_url': 866406,
-
-        // 'url_result': 'safe', 'url_per': 97.37, 
-        // 'country': 'United States of America', 'region': 'California', 'city': 'Mountain View', 'lat': 37.405992, 'lng': -122.078515, 'error': 0, 'url': 'https://www.youtube.com', 'ip': '172.217.25.174',
-        // 'cnn_result': 'non', 'cnn_per': 99.97628331184387}
     })
     .catch(function (error) {
-      alert("Error");
+        logErrorAndHandle(error);
+        alert("Error");
     });
 }
 //http://www.germany-secure.com/449941/deu/problem/B0024YZ354/sec/konto_verifizieren/ 접속 안됨
@@ -100,7 +93,7 @@ function logInput(data) {
     document.getElementById("log_inputs").value = allInputs;
 }
 function changeText(url_ID, data) {
-    const dataContainer = document.getElementById(url_ID);
+    var dataContainer = document.getElementById(url_ID);
     dataContainer.innerHTML = data;
 }
 function showLoading() {
@@ -112,4 +105,11 @@ function showLoading() {
 function hideLoading() {
     var hide = document.getElementById('loadingContainer');
     hide.style.display = "none";
+}
+function logErrorAndHandle(error) {
+    // 에러 로그 출력
+    console.error("An error occurred:", error);
+
+    // 에러 처리 또는 추가 작업 수행 가능
+    // 예: 사용자에게 메시지 표시 또는 다른 동작 수행
 }

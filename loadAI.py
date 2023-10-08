@@ -11,9 +11,8 @@ with open('./pkl/tokenizerLabel.pkl', 'rb') as tokenizer_file:
 
 max_len = 64
 
-def proccess_cnn(input_data) :
+def proccess_cnn(input_data, model) :
     reArr = ["1", "2"]
-    model = keras.models.load_model("./models/CNN.h5")
 
     domain_parts = tldextract.extract(input_data)
     main_domain = domain_parts.domain + "." + domain_parts.suffix
@@ -30,12 +29,13 @@ def proccess_cnn(input_data) :
 
     org_per = model.predict([padded_data])
     predicted_class = np.argmax(org_per)  # 가장 높은 확률을 가진 인덱스
-    per = float(org_per[0][predicted_class]) * 100
-
+    per = float(org_per[0][predicted_class])*100
     label = tokenizerLabel.word_index
     for i in label:
         if label[i] == predicted_class:
             reArr[0] = i
+    if reArr[0] == "non":
+        reArr[0] = "safe"
 
     reArr[1] = round(per, 2)
     return reArr  # [0]에는 결과 [1]에는 확률을 리턴

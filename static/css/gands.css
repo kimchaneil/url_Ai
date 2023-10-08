@@ -1,0 +1,52 @@
+/* 그래프 컨테이너의 스타일 */
+#chart-container {
+    width: 400px;
+    height: 300px;
+    margin: 20px;
+    border: 1px solid #ccc;
+}
+/* 배경색을 지정하는 CSS 스타일 */
+.red-background { background-color: rgba(155, 30, 30, 0.349);}
+.blue-background { background-color: rgba(75, 75, 196, 0);}
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+/* 스크롤이 있는 div에 스크롤 스타일 적용 */
+.scrollable-div {
+  border: 1px solid;
+  border-radius: 30px;
+  overflow-x: auto;
+  overflow-y: auto;
+  height:600px;
+}
+/* 스크롤바 스타일 지정 */
+::-webkit-scrollbar {
+    width: 12px; /* 스크롤바의 너비 지정 */
+    border-radius: 6px;
+}
+
+/* 스크롤바 트랙 스타일 지정 */
+::-webkit-scrollbar-track {
+    background: #f1f1f100; /* 스크롤바 트랙 배경색 지정 */
+}
+
+/* 스크롤바 색상 지정 */
+::-webkit-scrollbar-thumb {
+    background: rgb(13, 10, 255); /* 스크롤바 색상 지정 */
+    border-radius: 20px; /* 스크롤바 모서리 둥글게 지정 */
+}
+
+/* 스크롤바 마우스 호버 시 색상 지정 */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+th, td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}

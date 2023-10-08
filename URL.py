@@ -675,3 +675,7 @@ def url_final_result(url):
   result['url_result'] = answer
   result['url_per'] = round(prob,4)*100
   return result
+
+
+
+# -*- coding: utf-8 -*-
