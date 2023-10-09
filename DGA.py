@@ -55,10 +55,3 @@ rows = [(dga[i][0], dga[i][1], dga[i][2]) for i in range(len(dga))]
 with open('./dataset/preprocessing.csv', 'w', newline='') as csvfile:
     writer = csv.writer(csvfile)
     writer.writerows(rows)
-
-# tokenizer 객체 저장
-with open('tokenizer.pkl', 'wb') as tokenzier_file : 
-    pickle.dump(tokenizer, tokenzier_file)
-
-with open('tokenizerLabel.pkl', 'wb') as tokenzier_file : 
-    pickle.dump(tokenizerLabel, tokenzier_file)
