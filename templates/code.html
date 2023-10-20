@@ -36,6 +36,28 @@
   * Author: BootstrapMade.com
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+      table {
+          border-collapse: collapse;
+          width: 100%;
+      }
+
+      th, td {
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+      }
+
+      th {
+          white-space: nowrap; /* 첫 번째 열의 줄바꿈 없음 */
+      }
+
+      td:nth-child(2) {
+          white-space: normal; /* 두 번째 열 자동 줄바꿈 */
+      }
+  </style>
 </head>
 
 <body>
@@ -111,6 +133,85 @@
       <div class="container">
         <div class="row gy-4 align-items-center features-item" data-aos="fade-up">
           <div>
+            <h3>동작 순서</h3><br>
+            <h4>[1단계]</h4>사용자에게 전달 받은 URL과 머신러닝모델에서 필요한 특징값 35개를 추출합니다.<br>
+            특징값은 예측 결과가 특징값별 가중치, 악성 URL이 갖는 특징에 대한 논문을 참고하여 35개를 선정했으며 그 종류는 다음과 같습니다.<br><br>
+            <table border="1">
+              <thead>
+                  <tr>
+                      <th>종류</th>
+                      <th>특징값 목록</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                      <td>개수 기반</td>
+                      <td>도메인 개수, http 개수, https 개수, . 개수, // 개수, - 개수, @ 개수, www 개수, = 개수, 개수, ~ 개수, ? 개수, &#% 개수, 악성 문자열 개수, 숫자 개수, 쿼리 개수, 쿼리 악성 문자열 개수, url_path 깊이</td>
+                  </tr>
+                  <tr>
+                      <td>길이 기반</td>
+                      <td>url 길이, url path 길이, url netloc 길이, url tld 길이, 쿼리 길이</td>
+                  </tr>
+                  <tr>
+                      <td>유무 기반</td>
+                      <td>쿼리 인코딩 유무, url 내 ip 포함 여부, 단축 서비스 유무</td>
+                  </tr>
+                  <tr>
+                      <td>비율 기반</td>
+                      <td>랜덤한 정도, 대문자 알파벳 비율</td>
+                  </tr>
+                  <tr>
+                      <td>도메인 기반</td>
+                      <td>포트 번호, 도메인 생성일~현재, 현재~도메인 만료일, 도메인 전체 수명, 트래픽 길이, abnormal 유무</td>
+                  </tr>
+              </tbody>
+            </table>
+            <br>
+            <h4>[2단계]</h4>입력받은 특징값과 URL을 다음 8개의 모델에 입력하며 모델은 최신화가 지속적으로 진행<br><br>
+            <table>
+              <thead>
+                  <tr>
+                      <th>모델</th>
+                      <th>설명</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                      <td>Random Forest Model</td>
+                      <td>다수의 결정 트리를 투표 방식으로 조합하여 입력된 URL이 악성인지 정상인지 판단하는 모델</td>
+                  </tr>
+                  <tr>
+                      <td>Gradient Boosting Model</td>
+                      <td>여러 약한 모델을 결합하여 이전 모델의 오차를 보완하면서 URL의 악성 여부를 판단하는데 사용</td>
+                  </tr>
+                  <tr>
+                      <td>Hist Gradient Boosting Model</td>
+                      <td>효율적인 히스토그램 기반 학습과 예측을 통해 URL의 악성 여부를 판단하며, 빠르고 정확한 결과를 제공</td>
+                  </tr>
+                  <tr>
+                      <td>Ensemble Model1(RF-GB-ET-MLP-LR)</td>
+                      <td>다양한 모델의 강점을 활용하여 URL의 악성 여부에 대한 정확한 분류 성능을 제공</td>
+                  </tr>
+                  <tr>
+                      <td>Ensemble Model1(DT-RF-KNN-MLP-LR)</td>
+                      <td>K-최근접 이웃 모델을 포함한 다양한 알고리즘을 활용하여 URL의 악성 여부에 대한 높은 분류 정확도와 강건성을 제공</td>
+                  </tr>
+                  <tr>
+                      <td>Ensemble Model1(RF-GB-MLP-AB-HGB)</td>
+                      <td>에이다부스트 모델을 포함한 다양한 머신 러닝 기법을 활용하여 URL의 악성 여부를 판단</td>
+                  </tr>
+                  <tr>
+                      <td>Ensemble Model1(KNN-GNB-MLP-RF-GB)</td>
+                      <td>URL의 악성 여부를 다양한 관점에서 평가하며, 다중 모델의 다양성을 통해 악성 URL에 대한 정확한 분류를 강화</td>
+                  </tr>
+                  <tr>
+                      <td>Convolutional Neural Network</td>
+                      <td>딥러닝 모델로 DGA에 대한 학습 결과를 바탕으로 해당 URL의 도메인이 DGA에 의한 생성 여부에 대해 예측값과 예측 확률을 출력</td>
+                  </tr>
+              </tbody>
+            </table>
+            <br>
+            <h4>[3단계]</h4>다음 8개의 모델을 성능별로 가중치를 부여하는 가중 다수결 조합방식으로 종합하여 특정 URl이 악성인지 아닌지 여부를 최종 출력<br><br>
             <h3>URL</h3>
             <!--<p class="fst-italic">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
@@ -122,11 +223,7 @@
 
               기존의 머신러닝을 활용한 악성 URL탐지 모델에서는 대부분 개수기반, 길이 기반, 존재 기반, 비율 기반 등의 어휘적 특징이 많이 사용되었다. 
               그러나 프로젝트 진행과정에서 어휘적 특징만을 활용한 악성 url탐지에는 한계가 있음을 확인하여 
-              도메인 수명, 트래픽 길이, 도메인 생성일자와 같은 도메인 정보를 학습에 동시에 활용했다. <br> 다음과 같은 특징값들을 포함하여 
-              학습과정에서 모델내 특징값별 기여도를 참고하고 시중에 있는 논문을 참고하여 35개의 특징값을 최종 선별했으며 그 종류는 다음과 같다. <br>
-              <center>
-                <img src="../static/img/url/url1.png" alt="">
-              </center>
+              도메인 수명, 트래픽 길이, 도메인 생성일자와 같은 도메인 정보를 학습에 동시에 활용했다. <br>
               특징값의 추출 과정 역시 파이썬에서 이루어졌으며 도메인 정보와 같은 정보는 urllib라이브러리를 활용하여 
               추출했으며 출력된 특징값을 데이터화 하여 저장하기 위한 csv라이브러리, 학습이 가능한 형태로 저장하고 활용하기 
               위한 pandas라이브러리도 활용되었으며 모델 학습을 위한 sklearn라이브러리도 활용했다. <br> 모델은 총 10개의 단일 모델을 활용했으며 
@@ -159,7 +256,45 @@
               <center>
                 <img src="../static/img/url/dga1.png" alt="">
               </center>
-              해당 모델은 다중 분류 모델로 dga와 non-dga로 나뉘며 dga의 종류에는 cryptolocker, newgoz, gameoverdga, nivdort, necurs, goz, bamital이 있고 non-dga는 alexa, legit로 나뉘어 진다.
+              해당 모델은 다중 분류 모델로 dga와 non-dga로 나뉘며 dga의 종류에는 cryptolocker, newgoz, gameoverdga, nivdort, necurs, goz, bamital이 있고 non-dga는 alexa, legit로 나뉘어 진다.<br><br>
+              <table>
+                <thead>
+                    <tr>
+                        <th>DGA</th>
+                        <th>설명</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>CryptoLocker</td>
+                        <td>DGA를 사용하여 C&C 서버에 연결하고, 암호화된 파일을 복원하기 위해 피해자에게 요구하는 도메인을 동적으로 생성</td>
+                    </tr>
+                    <tr>
+                        <td>NewGoz</td>
+                        <td>금융 부문을 타겟으로 하는 악성 코드로, DGA를 사용하여 악성 서버와 통신하고 금전적 이익을 추출하는 데 활용</td>
+                    </tr>
+                    <tr>
+                        <td>GameOverDGA</td>
+                        <td>DGA를 사용하여 봇넷과 통신하며, 금융 정보를 탈취하고 악성 활동을 숨기기 위해 동적 도메인을 생성</td>
+                    </tr>
+                    <tr>
+                        <td>Nivdort</td>
+                        <td>DGA를 활용하여 트로이목마를 배포하고, 사용자의 개인 정보를 탈취하거나 다른 악성 코드를 설치</td>
+                    </tr>
+                    <tr>
+                        <td>Necurs</td>
+                        <td>대규모 스팸 및 악성 파일 배포를 위해 DGA를 사용하며, 다양한 악성 활동에 이용</td>
+                    </tr>
+                    <tr>
+                        <td>Goz</td>
+                        <td>금융 정보를 탈취하고 악성 활동을 숨기기 위해 DGA를 활용하는 악성 코드</td>
+                    </tr>
+                    <tr>
+                        <td>Bamital</td>
+                        <td>클릭 사기 및 광고 클릭 부정행위를 실행하며 DGA를 사용하여 도메인을 동적으로 생성하여 악성 활동을 수행</td>
+                    </tr>
+                </tbody>
+            </table>
             </p>
           </div>
         </div><!-- Features Item -->
