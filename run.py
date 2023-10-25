@@ -67,4 +67,4 @@ if __name__ == '__main__':
     thread.start()
 
     # Waitress를 사용해 백그라운드 서버를 실행합니다.
-    serve(app, host='127.0.0.1', port=443)
+    serve(app, host='127.0.0.1', port=5000)
