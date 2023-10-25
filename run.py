@@ -59,11 +59,7 @@ def process_url():
     resulturl['ip'] = ip
     print(resulturl)
     return jsonify(resulturl)
-
-def run_flask_app():
-    app.run()  # debug=True : 개발 중 수정한 파일이 실시간으로 반영되어 재가동 됨
     
 if __name__ == '__main__':
-    t = threading.Thread(target=run_flask_app)
-    t.start()
+    app.run()# debug=True : 개발 중 수정한 파일이 실시간으로 반영되어 재가동 됨
 
