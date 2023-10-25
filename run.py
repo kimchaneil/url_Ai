@@ -59,4 +59,4 @@ def process_url():
     return jsonify(resulturl)
 
 if __name__ == '__main__':
-    app.run(debug=True)  # debug=True : 개발 중 수정한 파일이 실시간으로 반영되어 재가동 됨
+    app.run()  # debug=True : 개발 중 수정한 파일이 실시간으로 반영되어 재가동 됨
