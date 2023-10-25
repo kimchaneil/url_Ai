@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from flask import Flask, render_template, request, jsonify
 # render_template 라이브러리는 파이썬 파일과 같은 위치에 templates 폴더 안에 있는 html만 가능함
 # jsonify json data를 내보내기 위함

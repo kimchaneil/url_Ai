@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from tensorflow import keras
 import tldextract  # 메인 도메인만 추출 (Ex)youtube.com)
 import numpy as np

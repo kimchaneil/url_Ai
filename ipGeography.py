@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import requests  # API 사용
 import json  # json 파일 사용
 import socket
