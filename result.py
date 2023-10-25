@@ -7,46 +7,9 @@
 ########################################################
 # 라이브러리1 : GUI만들때만 필요한 것들.
 
-import numpy as np
 import pandas as pd #csv파일을 읽어올때
-import matplotlib.pyplot as plt #그래프
-import seaborn as sns #그래프 형태
-
-from sklearn.model_selection import train_test_split #데이터 셋을 분리 : 트레인&테스트
-from sklearn.model_selection import KFold, cross_val_score, cross_val_predict #
-from sklearn import metrics #메트릭을 확인.
-
-#머신러닝 메소드
-from sklearn import svm
-from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import AdaBoostClassifier
-from sklearn.ensemble import GradientBoostingClassifier
-from sklearn.ensemble import ExtraTreesClassifier
-from sklearn.ensemble import BaggingClassifier
-from sklearn.naive_bayes import GaussianNB
-from sklearn.neural_network import MLPClassifier
-from sklearn.svm import SVC
-from sklearn.metrics import classification_report
-from sklearn.ensemble import StackingClassifier
-from sklearn.ensemble import VotingClassifier
-from sklearn.utils import resample
-from sklearn.preprocessing import StandardScaler
-from sklearn.ensemble import HistGradientBoostingClassifier
-from sklearn.feature_selection import SelectKBest, chi2
-
-import tkinter as tk
-from tkinter import ttk
-from tkinter import Toplevel
-from PIL import Image, ImageTk  # PIL 라이브러리 사용
-from tkinter import messagebox
-import matplotlib.pyplot as plt
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import random
 import pandas as pd
-from tkinterhtml import HtmlFrame  # 추가된 부분
 import joblib
 import time
 
@@ -56,25 +19,15 @@ warnings.filterwarnings("ignore", category=FutureWarning)
 import whois
 from urllib.parse import urlparse, urlunparse, unquote, parse_qs
 import urllib.request
-import socket
 import requests
-from bs4 import BeautifulSoup
 import re
 from datetime import datetime
 import pandas as pd
 import random
 import time
 import datetime
-from datetime import date,timedelta
-import os
-import csv
-import sys
 import tldextract
 import joblib
-import json
-import dns.resolver #오류 뜨면 [pip install dnspython]을 먼저 해보기~
-import ssl
-import timeout_decorator #함수 실행시간 제한.
 
 from loadAI import proccess_cnn
 
