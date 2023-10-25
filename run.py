@@ -6,6 +6,7 @@ from ipGeography import urlToIP, location
 from result import url_final_result
 import pandas as pd
 import threading
+from waitress import serve
 
 app = Flask(__name__)
 
@@ -59,7 +60,11 @@ def process_url():
     resulturl['ip'] = ip
     print(resulturl)
     return jsonify(resulturl)
-    
-if __name__ == '__main__':
-    app.run()# debug=True : 개발 중 수정한 파일이 실시간으로 반영되어 재가동 됨
 
+if __name__ == '__main__':
+    # Flask 애플리케이션을 백그라운드 쓰레드에서 실행합니다.
+    thread = threading.Thread(target=app.run, kwargs={'host': '0.0.0.0', 'port': 8080})
+    thread.start()
+
+    # Waitress를 사용해 백그라운드 서버를 실행합니다.
+    serve(app, host='127.0.0.1', port=443)
