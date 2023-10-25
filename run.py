@@ -5,6 +5,7 @@ from flask import Flask, render_template, request, jsonify
 from ipGeography import urlToIP, location
 from result import url_final_result
 import pandas as pd
+import threading
 
 app = Flask(__name__)
 
@@ -59,5 +60,10 @@ def process_url():
     print(resulturl)
     return jsonify(resulturl)
 
-if __name__ == '__main__':
+def run_flask_app():
     app.run()  # debug=True : 개발 중 수정한 파일이 실시간으로 반영되어 재가동 됨
+    
+if __name__ == '__main__':
+    t = threading.Thread(target=run_flask_app)
+    t.start()
+
