@@ -5,6 +5,7 @@ from flask import Flask, render_template, request, jsonify
 from ipGeography import urlToIP, location
 from result import url_final_result
 import pandas as pd
+import threading
 from waitress import serve
 
 app = Flask(__name__)
@@ -61,7 +62,9 @@ def process_url():
     return jsonify(resulturl)
 
 if __name__ == '__main__':
-    # Gunicorn을 사용하여 Flask 애플리케이션을 실행
-    # 워커 프로세스는 4개로 설정하며, 0.0.0.0:8080에서 실행
-    from gunicorn import Gunicorn
-    Gunicorn(app, bind="0.0.0.0:8080", workers=4).run()
+    # Flask 애플리케이션을 백그라운드 쓰레드에서 실행합니다.
+    thread = threading.Thread(target=app.run, kwargs={'host': '0.0.0.0', 'port': 8080})
+    thread.start()
+
+    # Waitress를 사용해 백그라운드 서버를 실행합니다.
+    serve(app, host='0.0.0.0', port=5000)
