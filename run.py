@@ -12,12 +12,11 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     # x 변수 html에 전달, html에서 {{x}}로 받음
-    csv_file = "D:\AiURL\dataset\print.csv"
+    csv_file = ".\dataset\print.csv"
     data = pd.read_csv(csv_file, encoding='cp1252')
     # 데이터 프레임을 HTML 테이블로 변환
     random_rows = data.sample(n=500)
     # table_html = random_rows.to_html(classes='table table-striped', index=False)
-
     return render_template('index.html', table_html=random_rows)
 
 @app.route('/code.html')
@@ -31,12 +30,11 @@ def team():
 @app.route('/index.html')
 def home():
     # x 변수 html에 전달, html에서 {{x}}로 받음
-    csv_file = "D:\AiURL\dataset\print.csv"
+    csv_file = ".\dataset\print.csv"
     data = pd.read_csv(csv_file, encoding='cp1252')
     # 데이터 프레임을 HTML 테이블로 변환
     random_rows = data.sample(n=500)
     # table_html = random_rows.to_html(classes='table table-striped', index=False)
-
     return render_template('index.html', table_html=random_rows)
 
 @app.route('/process_url', methods=['POST'])
