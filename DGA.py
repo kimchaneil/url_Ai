@@ -2,7 +2,6 @@
 
 import csv
 from keras.preprocessing.text import Tokenizer
-import pickle
 
 dga = []
 url = []
